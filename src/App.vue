@@ -3,12 +3,12 @@ import {ref} from 'vue'
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 
-const intext = ref(null);
-const outtext = ref(null);
+const intext = ref("");
+const outtext = ref("");
 
 function tojson(event:Event){
   const retlst = [];
-  const arrs = intext.value.value.split("\n")
+  const arrs = intext.value.split("\n")
   const cols:string[] = arrs[0].split(",")
   for (let i = 1; i < arrs.length; i++) {
     let tempobj:Object = {}
@@ -20,26 +20,27 @@ function tojson(event:Event){
   }
   console.log(retlst)
 
-  outtext.value.value = "[" + retlst.toString() + "]"
+  outtext.value = "[" + retlst.toString() + "]"
 
 }
 
 function tocsv(event:Event){
-  const jsarr = JSON.parse(intext.value.value)
+  const jsarr = JSON.parse(intext.value)
   let csvstr = "" + Object.keys(jsarr[0])+"\n"
   for (let i = 0;i<jsarr.length;i++){
     csvstr = csvstr + Object.values(jsarr[i]).join(",") + "\n"
   }
-  outtext.value.value = csvstr
+  outtext.value = csvstr
 
 }
 
 </script>
 
 <template>
-
-  <p><label for="csvinput">CSV</label></p>
-  <textarea title="input" ref="intext" id="input" rows="18" spellcheck="false"></textarea>
+  
+  <h1>JSON/CSV Data Converter</h1>
+  <p><label for="csvinput">Input</label></p>
+  <textarea title="input" v-model="intext" id="input" rows="18" spellcheck="false"></textarea>
 
 
   <div>
@@ -48,7 +49,7 @@ function tocsv(event:Event){
   </div>
   <div>
     <p><label for="output"> Output</label></p>
-    <textarea title="output" ref="outtext" id="result" rows="18" spellcheck="false" disabled></textarea>
+    <textarea title="output" v-model="outtext" id="result" rows="18" spellcheck="false" disabled></textarea>
   </div>
 </template>
 
